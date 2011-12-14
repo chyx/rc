@@ -1,0 +1,513 @@
+# Rep
+snippet R
+	Rep(${1:_}, ${2:_})${3}{
+		${4}
+	}
+snippet RR
+	Rep(${1:_}, ${2:_})Rep(${3:_}, ${4:_})${5}{
+		${6}
+	}
+snippet RRR
+	Rep(${1:_}, ${2:_})Rep(${3:_}, ${4:_})Rep(${5:_}, ${6:_})${7}{
+		${8}
+	}
+# gcd 
+snippet gcd
+	${1:int} gcd( $1 a, $1 b){
+		$1 t;
+		while(b) t = a % b, a = b, b = t;
+		return a;
+	}
+snippet month
+	int _dayofmonth[] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+	int isleap(int year){
+		if( year % 100 == 0 ) return year % 400 == 0;
+		return year % 4 == 0;
+	}
+	int dayofmonth(int year, int month){
+		if( month == 2 ) {
+			return 28 + isleap(year);
+		}
+		return _dayofmonth[month-1];
+	}
+snippet factor
+	for(int ${1:d} = 2; $1 * $1 <= ${2:n}; ++$1){
+		while( $2 % $1 == 0 ){
+			$2 /= $1;
+		}
+	}
+	if( $2 != 1 ){
+		${3}
+	}
+snippet startsWith
+	bool startsWith(string text, string p){
+		if( text.size() < p.size() ) return false;
+		return text.substr(p.size()) == p;
+	}
+snippet endsWith
+	bool endsWith(string text, string p){
+		if( text.size() < p.size() ) return false;
+		return text.substr(text.size() - p.size()) == p;
+	}
+snippet inrange
+	#define inrange(x,y) (0<=(x) && (x)<(${1:n}) && 0<=(y) && (y)<(${2:m}) )
+snippet XY
+	#define X real()
+	#define Y imag()
+snippet combination
+	${2:int} C[${1:N}][$1];
+	memset(C,0,(sizeof C));
+	Rep(i, $1) C[i][0] = 1;
+	for(int i = 1; i < $1; ++i){
+		for(int j = 1; j <= i; ++j){
+			C[i][j] = C[i-1][j-1] + C[i-1][j];
+		}
+	}${3}
+snippet dxdy
+	int dx[4] = {1, 0, -1, 0};
+	int dy[4] = {0, 1, 0, -1};
+# breath first search
+snippet BFS
+	vector<${1:int}> P, Q;
+	bitset<${2:MAXN}> mk;
+	Q.push_back( ${3:s} );
+	mk[ $3 ] = true; 
+	int step = 0;
+	for(;;++step){
+		if( Q.empty() )break;
+		Rep(iq,Q.size()){
+			$1 curr = Q[iq];
+			for(;xxx;){
+				nxt = ${5:transform}(curr);
+				if( !mk[nxt] ){
+					P.push_back( nxt );
+					mk[nxt] = true;
+				}
+			}
+		}
+		P.swap(Q); P.clear();
+	}
+snippet prime
+	bitset<${1:N}> isprime;
+	isprime.set();
+	isprime[0] = isprime[1] = false;
+	for(int i = 4; i < isprime.size(); i += 2 )isprime[i] = false;
+	for(int i = 3; i < isprime.size(); i += 2 )if( isprime[i] ){
+		for(int k = i * 3; k < isprime.size(); k += i + i) isprime[k] = false;
+	}${2}
+snippet ST
+	template<int M>
+	struct ST{
+		int T[M+M];
+		ST(){ memset(T,0,(sizeof T)); }
+		int getsum(int s, int t){
+			int sum = 0;
+			s += M - 1; t += M + 1; // find leaves
+			for(; (s ^ t) != 1; s /= 2, t /= 2){
+				if( ~s & 1 ) sum += T[s^1];
+				if( t & 1 ) sum += T[t^1];
+			}
+		}
+		int operator[](const int x){
+			int s = 0, t = M - 2;
+			int pos = 1, curr = 0;
+			for(; pos < M; ){
+				pos *= 2;
+				if( curr + T[pos] < x ){
+					curr += T[pos];
+					pos++;
+				}
+			}
+			return pos - M;
+		}
+		void operator+=(int v){
+			v += M;
+			T[v]++;
+			for(v /= 2; v; v /= 2){
+				T[v] = T[v+v] + T[v+v+1];
+			}
+		}
+	}
+snippet getmax
+	vector<pair<${1:int}, ${2:int}> > ${3:cand_vector};
+	forElem(elem, ${4:v}){
+		$3.push_back( make_pair(${5:elem.second, elem.first}) );
+	}
+	max_element(ALL($3))->second;
+snippet Edge
+	struct Edge{
+		int v, next;
+	}edge[M];
+	int head[N], ne;
+	void init_edge(){
+		ne = 0;
+		memset(head,-1,(sizeof head));
+	}
+	void add_edge(int a, int b){
+		edge[ne].v = b; edge[ne].next = head[a]; head[a] = ne++;
+		edge[ne].v = a; edge[ne].next = head[b]; head[b] = ne++;
+	}
+snippet Matrix
+	template<class T>
+	struct Matrix{
+		vector<vector<T> > val;
+		int n, m;
+		Matrix(int n = 1, int m = 1):n(n),m(m){
+			Rep(i, n){
+				val.push_back( vector<T>(m, T(0)) );
+			}
+		}
+		vector<T>& operator[](const int x){return val[x];}
+		vector<T> const& operator[](const int x)const{return val[x];}
+		Matrix operator*(const Matrix& other)const{
+			Matrix ans(n, other.m);
+			Rep(i, n){
+				Rep(j, other.m){
+					Rep(k, m){
+						ans[i][j] += val[i][k] * other[k][j];
+					}
+				}
+			}
+			return ans;
+		}
+	};
+#myio
+snippet myio
+	namespace myio{
+		const int IFILE = 4000000, OFILE = 3000000;
+		int i_sz, ic, oc;
+		char ibuf[IFILE], obuf[OFILE];
+		void init(){
+			i_sz = fread(ibuf, 1, IFILE, stdin);
+			ic = oc = 0;
+		}
+		void finish(){
+			fwrite(obuf, 1, oc, stdout);
+		}
+		__inline__ char getchar(){
+			if( ic == i_sz ) return -1;
+			return ibuf[ic++];
+		}
+		void puts(char *ch){
+			while( obuf[oc++] = *ch++ );
+			obuf[oc-1] = '\n';
+		}
+		int getint(int n=0){
+			char c;for(c=ibuf[ic++];c<'0'||'9'<c;c=ibuf[ic++]);do{n=(n<<3)+(n<<1)+c-'0';c=ibuf[ic++];}while('0'<=c&&c<='9');return n;
+		}
+	};
+snippet doit
+	map<$2, $1 > memo;
+	set<$2 > mk;
+	${1:int} doit(${2:int} ${3:x}){
+		$1& ret = memo[$3];
+		if( mk.count($3) )return ret;
+		mk.insert($3);
+		return ret;
+	}
+	mk.clear(); ${4}
+snippet dij
+	priority_queue<pair<${1:int}, ${2:int}>, vector< pair<$1, $2> >, greater< pair<$1, $2> > > Q;
+	memset(dist, 0x3f, (sizeof dist));
+	dist[${3:src}] = 0;
+	Q.push(make_pair(0,$1));
+	while( !Q.empty() ){
+		pair<$1, $2> top = Q.top(); Q.pop();
+		$2 cur = top.second;
+		for(;;){
+			$1 better = dist[cur] + w;
+			if( better < dist[nxt] ){
+				dist[nxt] = better;
+				Q.push(make_pair(dist[nxt], nxt));
+			}
+		}
+	}
+snippet lca
+	void dfs(int parent, int x, int d = 0, int dep = 0){
+		dist[x] = d;
+		jump[x][0] = parent;
+		depth[x] = dep;
+		forEdge(it,x)if( edge[it].v != parent ){
+			dfs(x, edge[it].v, d + edge[it].w, dep+1);
+		}
+	}
+
+	int jumpf(int x, int d){
+		for(int i = 0; d; d/=2, i++){
+			if( d & 1 ) x = jump[x][i];
+		}
+		return x;
+	}
+
+	int lca(int x, int y){
+		if( depth[x] > depth[y] )swap(x,y);
+		y = jumpf(y, depth[y] - depth[x]);
+		if( x == y ) return x;
+		for(int b = 31 - __builtin_clz(depth[x]); b >= 0; --b){
+			if( jump[x][b] != jump[y][b] ){
+				x = jump[x][b];
+				y = jump[y][b];
+			}
+		}
+		return jump[x][0];
+	}
+
+	memset(jump,-1,(sizeof jump));
+	dfs(-1,1);
+	for(int j = 1; two(j) < n; ++j){
+		for(int i = 1; i <= n; ++i)if( jump[i][j-1] != -1 ){
+			jump[i][j] = jump[ jump[i][j-1] ][j-1];
+		}
+	}
+#disjoint set
+snippet pnt simple
+	int pnt[${1:MAXN}];
+	int getpnt(int x){
+		if( x == pnt[x] ) return x;
+		return pnt[x] = getpnt( pnt[x] );
+	}
+	void make_set(int n){
+		Rep(i,n) pnt[i] = i;
+	}
+	void union_set(int x, int y){
+		getpnt(x);
+		getpnt(y);
+		pnt[ pnt[x] ] = pnt[y];
+	}
+	${2}
+
+snippet pnt rank
+	int pnt[${1:MAXN}];
+	int getpnt(int x){
+		if( x == pnt[x] ) return x;
+		int p = getpnt( pnt[x] );
+		rank[x] += rank[ p ];
+		return pnt[x] = p;
+	}
+	void make_set(int n){
+		Rep(i,n) pnt[i] = i;
+		Rep(i,n) rank[i] = 1;
+	}
+	void union_set(int x, int y){
+		getpnt(x);
+		getpnt(y);
+		rank[ pnt[x] ] += ${2}
+		pnt[ pnt[x] ] = pnt[y];
+	}
+	${3}
+
+snippet pair with_comparator
+	struct ${1:pair_name}{
+		${2:int} ${3:first};
+		${4:int} ${5:second};
+		$1(){}
+		$1($2 $3, $4 $5):$3($3), $5($5){}
+		bool operator<($1 const& other){
+			if( $3 < other.$3 )return true;
+			if( other.$3 < $3 )return false;
+			return $5 < other.$5;
+		}
+	};
+snippet pair simple
+	struct ${1:pair_name}{
+		${2:int} ${3:first};
+		${4:int} ${5:second};
+		$1(){}
+		$1($2 $3, $4 $5):$3($3), $5($5){}
+	};
+snippet tsp 0->(n-1)
+	// oo = 0x1f1f1f1f
+	memset(${3:dp},0x1f,(sizeof $3));
+	Rep(i,${1:n}-1){
+		$3[two(i)][i] = ${2:dist}[0][i+1];
+	}
+	for(int msk = 1; msk < two(n-2); msk++){
+		Rep(i,n-2)if( two(i) & msk ){
+			Rep(j,n-2) if(i != j && (two(j) & msk) ){
+				checkMin($3[msk][i], $3[msk ^ two(i)][j] + $2[i+1][j+1] );
+			}
+		}
+	}
+	${4}
+
+snippet sg
+	int sg[MAX_VALUE];
+	bitset<MAX_VALUE> mk_sg;
+
+	for (int value = 1; value < MAX_VALUE; value++) {
+		mk_sg.reset();
+		for (int d = 1; d <= value; d*=4) {
+			//出错bug情况，sg值刚好等于下标
+			//mk_sg[value-d] = true;
+			mk_sg[sg[value-d]] = true;
+		}
+		for (int i = 0; i < MAX_VALUE; i++) {
+			if( !mk_sg[i] ){
+				sg[value] = i;
+				break;
+			}
+		}
+	}
+	puts("SG value:");
+	for (int i = 0; i < 20; i++) {
+		printf("%d: %d\n", i, sg[i] );
+	}
+
+#建图
+snippet graph_read
+	Rep(i,n)nxt[i] = i;
+	Rep(i,m){
+		scanf("%d%d%d", &a, &b, w+i);
+		name[i] = b;
+		nxt[i+n] = nxt[a];
+		nxt[a] = i+n;
+	}
+
+snippet graph_for
+	for(int ${2:i} = nxt[${1:cur}]; $2 != $1; $2 = nxt[$2] ){
+		int son = name[i-n];
+		${3}
+	}
+
+#interval
+snippet interval
+	struct Interval{
+		int a, b;
+	}interval[${1:MAXN}];
+	bool between(int x, Interval interval){
+		return x >= interval.a && x < interval.b;
+	}
+	${2}
+
+snippet relax
+	${1:int} better = ${4:};
+	if( better ${3:<} ${2:old} ){
+		$2 = better;
+	}
+	${5}
+snippet spfa
+	const int SIZE_QUEUE = ${1:10};
+	const int MAXN = ${2};
+	const int MAXM = ${3};
+	int oo = ${4:0x7f7f7f7f};
+	int sp[MAXN], from[MAXN];
+	int cost[MAXM];
+	struct CicleQueue{
+		int _data[two(SIZE_QUEUE)];
+		int& operator[](int a){
+			return _data[a&two(SIZE_QUEUE)-1];
+		}
+	};
+
+	CicleQueue Q;
+	bool spfa(int src, int dst, int n){
+		bitset<MAXN> mk;
+		mk.reset();
+		memset(sp,0x3f,(sizeof sp));
+		memset(from,-1,(sizeof from));
+		mk[src] = true;
+		sp[src] = 0;
+
+		int qs = 0, qe = 1;
+		Q[qs] = src;
+		for(;qs != qe;){
+			int cur = Q[qs++];
+			for(int i = st[cur]; i != -1; i = nxt[i] )if( flow[i] ){
+				int son = name[i];
+				int better = sp[cur] + cost[i];
+				if( better < sp[son] ){
+					sp[son] = better;
+					from[son] = i;
+					if( !mk[ son ] ){
+						mk[son] = true;
+						Q[qe++] = son;
+					}
+				}
+			}
+			mk[cur] = false;
+		}
+		return from[dst] != -1;
+	}
+snippet powm
+	${1:ll} powm($1 x, $1 n){
+		$1 ans = 1;
+		for(; n; n/=2){
+			if(n&1) ans = ans * x % ${2:P};
+			x = x * x % $2;
+		}
+	        return ans;
+	}${3}
+snippet hash
+	Pn = powm(P,len);
+	hashes[len] = 0;
+	Rep(i,len) hashes[len] = hashes[len] * P + input[i];
+	for(int i = mid; i < n; ++i){
+		hashes[i+1] = hashes[i] * P - input[i-mid] * Pn + input[i];
+	}
+snippet sort
+	sort(${1:arr}, $1 + ${2:n})${3}
+snippet unique
+	sort(${1:arr}, $1 + ${2:n});
+	${3}unique($1, $1 + $2) - $1;
+snippet hull
+    typedef complex<ll> Pt;
+    const int MAXN = 110000;
+
+    inline bool cmp(const Pt& a, const Pt& b){
+	    if( a.real() == b.real() ) return a.imag() < b.imag();
+	    return a.real() < b.real();
+    }
+
+    Pt pt1[MAXN], pt2[MAXN];
+    void convex_hull(Pt* pt, int n, Pt* ans, int &m){
+	    sort(pt,pt+n, cmp);
+	    n = unique(pt,pt+n)-pt;
+	    if( n <= 2 ){
+		    Rep(i,n)ans[i] = pt[i];
+		    m = n;
+		    return;
+	    }
+
+	    Pt U[MAXN], D[MAXN], hull[MAXN];
+	    int up, dp, hp;
+	    up = dp = hp = 0;
+	    U[up++] = D[dp++] = pt[0];
+	    U[up++] = D[dp++] = pt[1];
+
+	    for(int i = 2; i < n; ++i){
+		    while( up >= 2 && imag( conj( U[up-1] - pt[i] ) * ( U[up-2] - pt[i]) ) <= 0 ) up--;
+		    while( dp >= 2 && imag( conj( D[dp-1] - pt[i] ) * ( D[dp-2] - pt[i]) ) >= 0 ) dp--;
+		    U[up++] = D[dp++] = pt[i];
+	    }
+
+	    for(int i = 0; i < dp; ++i) hull[hp++] = D[i];
+	    for(int i = up - 2; i > 0; --i) hull[hp++] = U[i];
+	    m = hp;
+	    Rep(i,m)ans[i] = hull[i];
+    }
+snippet EE 
+	struct EE{
+		int to, rev;
+		EE(int to, int rev):to(to),rev(rev){}
+		EE(){}
+	};
+	vector<EE> *ee;
+	void init(int n){
+		ee = new vector<EE>[n](0);
+	}
+	void removeedge(int a, int aa){
+		int b = ee[a][aa].to, bb = ee[a][aa].rev;
+		#define revedge(e) ee[e.to][e.rev]
+		revedge(ee[a].back()).rev = aa;
+		swap(ee[a][aa], ee[a].back() );
+
+		revedge(ee[b].back()).rev = bb;
+		swap(ee[b][bb], ee[b].back() );
+
+		ee[a].resize( ee[a].size() - 1 );
+		ee[b].resize( ee[b].size() - 1 );
+	}
+	void addedge(int a, int b){
+		ee[a].push_back( EE(b,ee[b].size() ) );
+		ee[b].push_back( EE(a,ee[a].size()-1 ) );
+	}

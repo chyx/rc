@@ -1,0 +1,18 @@
+# Global snippets
+
+# (c) holds no legal value ;)
+snippet c)
+	`&enc[:2] == "utf" ? "©" : "(c)"` Copyright `strftime("%Y")` ${1:`g:snips_author`}. All Rights Reserved.${2}
+snippet date
+	`strftime("%Y-%m-%d")`
+snippet acm
+	//By chyx111
+
+	int main()
+	{
+		${1}
+		return 0;
+	}
+snippet sym
+      "${1}"			{ return symbol(sym.$1);}
+

@@ -1,0 +1,33 @@
+#iterator
+snippet trav
+	${1:vector}<${2:int}>::iterator it;
+	for(it = ${3:v}.begin(); it != $3.end(); ++it){
+		${4://it->first, it->second}
+	}
+	${5}
+# read maze
+snippet scanmaze without_frame
+	char mat[MAXN][MAXN];
+	scanf("%d%d", &n, &m);
+	Rep(i,n)scanf("%s", mat[i]);
+
+snippet scanmaze with_frame
+	char mat[MAXN][MAXN];
+	scanf("%d%d", &n, &m);
+	memset(mat,0,(sizeof mat));
+	for(int i = 1; i <=n; ++i)scanf("%s", mat[i]+1);
+
+snippet scann
+	scanf("%d", &n)${1}
+snippet ca
+	int ca;cin>>ca;
+	Rep(ica,ca){
+		${1}
+	}
+
+#read array
+snippet scanarray
+	Rep(i,${1:n})scanf("%d", arr+i);
+	${2}
+
+
