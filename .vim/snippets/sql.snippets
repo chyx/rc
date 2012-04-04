@@ -1,0 +1,18 @@
+snippet ctable
+	create table ${1:table_name}
+	(
+		a1 char(1), 
+		a2 date,
+		a3 number(3) default 5,
+		a4 int primary key,
+		a5 varchar(5) unique
+	);
+snippet import sqlite
+	.separator ","
+	.import ${1:tmp.csv} ${2:table_name}
+snippet export sqlite
+	.mode list
+	.separator ,
+	.output ${1:output.csv}
+	${2:select ...}
+	.output stdout
