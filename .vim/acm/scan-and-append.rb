@@ -45,7 +45,7 @@ output = []
 
 dict.each do |k, v|
 	next if content_set.count(v[0]) != 0
-	next if not v[0].start_with? "#include"
+	next if not (v[0].start_with? "#include" or v[0].start_with? "using")
 	reg = Regexp.compile(k)
 	if content_flat =~ reg
 		v.each {|l| output << l}
@@ -54,16 +54,16 @@ end
 
 content.each do |line|
 	output << line
-	if line.rstrip == signature.strip
+	if line.rstrip == signature.strip or line.rstrip == "//>w<"
 		dict.each do |k, v|
 			next if content_set.count(v[0]) != 0
-			next if v[0].start_with? "#include"
+			next if (v[0].start_with? "#include" or v[0].start_with? "using")
 			reg = Regexp.compile(Regexp.escape k)
 			if content_flat =~ reg
 				reg2 = Regexp.compile(Regexp.escape v[0])
 				unless content_flat =~ reg2
 					#puts k
-					v.each {|l| output << l} 
+					v.each {|l| output << l}
 				end
 			end
 		end
@@ -71,5 +71,5 @@ content.each do |line|
 end
 
 output.each do |l|
-	puts l
+	puts l.rstrip
 end

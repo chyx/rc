@@ -38,7 +38,9 @@ for(__typeof__(_it->second) & b = _it->second; _once2 && !(_once2 = false); _don
 //TWOLL(
 #define TWOLL(x) (1LL << (x))
 //DBG(
-#define DBG(a) do{cerr << #a << ": " << (a) << endl}while(0)
+#define DBG(a) do{cerr << #a << ": " << (a) << endl;}while(0)
+//DBG_(
+#define DBG_(a) do{cerr << #a << ": " << (a) << ' ';}while(0)
 //ALL(
 #define ALL(a) (a).begin(), (a).end()
 //SZ(
@@ -53,11 +55,11 @@ inline int _getint(int n = 0)
 	}
 	return n;
 }
-//iostream|map|bitset|algorithm|vector|<string>|complex
-using namespace std;
 //cerr|cout|cin
 #include <iostream>
-//sort|min|max|permutation
+//ofstream|fstream|ifstream
+#include <fstream>
+//sort|min|max|permutation|unique|__gcd|reverse|rotate|min_element|max_element|partial_sort|nth_element|pair
 #include <algorithm>
 //isdigit
 #include <cctype>
@@ -65,7 +67,9 @@ using namespace std;
 #include <bitset>
 //string
 #include <string>
-//rand
+//valarray
+#include <valarray>
+//rand|atoi
 #include <cstdlib>
 //assert
 #include <cassert>
@@ -79,14 +83,32 @@ using namespace std;
 #include <set>
 //map
 #include <map>
-//sin|cos|tan|pow|sqrt
+//sin\(|cos|tan|pow|sqrt|exp|log|fabs
 #include <cmath>
 //complex
 #include <complex>
 //vector
 #include <vector>
-//accumulate
+//deque
+#include <deque>
+//accumulate|partial_sum
 #include <numeric>
 //iterator
 #include <iterator>
+//stringstream
+#include <sstream>
+//iostream|map|bitset|algorithm|vector|<string>|complex|numeric|cmath
+using namespace std;
+//__power\(
+#include <ext/numeric>
+//__power
+using namespace __gnu_cxx;
+//likely(
+#ifndef likely
+#define likely(x) __builtin_expect((x), 1)
+#endif
+//unlikely(
+#ifndef unlikely
+#define unlikely(x) __builtin_expect((x), 0)
+#endif
 // vim: set filetype=cpp:

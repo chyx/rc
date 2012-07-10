@@ -1,44 +1,220 @@
-# Rep
-snippet R
-	Rep(${1:_}, ${2:_})${3}{
+# vim: filetype=cpp indentexpr& foldmarker=#{,#} foldmethod=marker
+snippet R #{
+	REP (${1:_}, ${2:_})${3}{
 		${4}
 	}
-snippet RR
-	Rep(${1:_}, ${2:_})Rep(${3:_}, ${4:_})${5}{
+#}
+snippet rv #{
+	REP (${1:_}, SZ(${2:_}))${3}{
+		${4}
+	}
+#}
+snippet RR #{
+	REP(${1:_}, ${2:_})REP(${3:_}, ${4:_})${5}{
 		${6}
 	}
-snippet RRR
-	Rep(${1:_}, ${2:_})Rep(${3:_}, ${4:_})Rep(${5:_}, ${6:_})${7}{
-		${8}
-	}
-# gcd 
-snippet gcd
-	${1:int} gcd( $1 a, $1 b){
-		$1 t;
-		while(b) t = a % b, a = b, b = t;
-		return a;
-	}
-snippet month
+#}
+snippet month #{
 	int _dayofmonth[] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
 	int isleap(int year){
-		if( year % 100 == 0 ) return year % 400 == 0;
+		if(year % 100 == 0){
+			return year % 400 == 0;
+		}
 		return year % 4 == 0;
 	}
-	int dayofmonth(int year, int month){
-		if( month == 2 ) {
+	int dayofmonth(int year, int month)
+	{
+		if(month == 2) {
 			return 28 + isleap(year);
 		}
 		return _dayofmonth[month-1];
 	}
-snippet factor
+#}
+snippet factor #{
 	for(int ${1:d} = 2; $1 * $1 <= ${2:n}; ++$1){
-		while( $2 % $1 == 0 ){
+		while($2 % $1 == 0){
 			$2 /= $1;
 		}
 	}
-	if( $2 != 1 ){
+	if($2 != 1){
 		${3}
 	}
+#}
+snippet pp #{
+	template<class S, class T> ostream& operator<<(ostream& os, pair<S, T> p)
+	{
+		return os << "(" << p.first << ", " << p.second << ")";
+	};
+#}
+snippet os #{
+	ostream& operator<<(ostream& os, ${1:T} const& obj)
+	{
+		return os << obj;
+	}
+#}
+snippet pv #{
+	template<class T> ostream& operator<<(ostream& os, vector<T> v){
+		REP (i, v.size()){
+			if(likely(i != 0)){
+				os << ' ';
+			}
+			os << v[i];
+		}
+		return os;
+	};
+#}
+snippet pii #{
+	pair<int, int>${1}
+#}
+snippet fin c#{
+	FILE *${1:fin} = fopen(${2:"input.txt"}, "r");${3}
+#}
+snippet fputc c#{
+	fputc(${1:ch}, ${2:fout})${3}
+#}
+snippet fout c#{
+	FILE *${1:fout} = fopen(${2:"output.txt"}, "w");${3}
+#}
+snippet ca #{
+	int ca;
+	scanf("%d", &ca);
+	REP(ica, ca){
+		${1}
+	}
+#}
+snippet memset #{
+	memset(${1:arr}, ${2:0}, (sizeof $1))${3}
+#}
+snippet getline c++ #{
+	getline(${1:fin}, ${2:str})${3}
+#}
+snippet powm #{
+	${1:ll} powm($1 x, $1 n, $1 ${2:P})
+	{
+		$1 ans = 1;
+		for(; n != 0; n >>= 1){
+			if((n & 1) != 0){
+				ans = ans * x % $2;
+			}
+			x = x * x % $2;
+		}
+		return ans;
+	}${3}
+#}
+snippet graph #{
+	// {{{
+	struct Edge{
+		int to, next;
+		int weight;
+	};
+	struct DirectedGraph{
+		Edge* edge;
+		int *head;
+		int ne, n, m;
+		DirectedGraph(int n, int m)
+			:n(n), m(m)
+		{
+			ne = 0;
+			head = new int[n];
+			edge = new Edge[m];
+			fill(head, head + n, -1);
+		}
+		~DirectedGraph()
+		{
+			delete[] head;
+			delete[] edge;
+		}
+		void add(int a, int b, int weight)
+		{
+			edge[ne].weight = weight;
+			edge[ne].to = b;
+			edge[ne].next = head[a];
+			head[a] = ne;
+			ne++;
+		}
+		void add_bi(int a, int b, int weight)
+		{
+			add(a, b, weight);
+			add(b, a, weight);
+		}
+	};
+	//}}}
+#}
+snippet union_set #{
+	struct UnionSet{ // {{{
+		int n;
+		valarray<int> pnt;
+		UnionSet(int n)
+			:n(n), pnt(-1, n)
+		{
+		}
+		void merge_set(int x, int y)
+		{
+			int px = get_pnt(x);
+			int py = get_pnt(y);
+			if(px == py){
+				return;
+			}
+			pnt[px] += pnt[py];
+			pnt[py] = px;
+		}
+		int get_pnt(int x)
+		{
+			if(pnt[x] < 0){
+				return x;
+			}
+			return pnt[x] = get_pnt(pnt[x]);
+		}
+		int get_size(int x)
+		{
+			return -pnt[get_pnt(x)];
+		}
+	};
+	// }}}
+#}
+snippet prime #{
+	bitset<${1:N}> is_prime;
+	is_prime.set();
+	is_prime[0] = is_prime[1] = false;
+	for(int i = 4; i < SZ(is_prime); i += 2){
+		is_prime[i] = false;
+	}
+	for(int i = 3; i < SZ(is_prime); i += 2)if(unlikely(is_prime[i])){
+		for(int k = i * 3; k < SZ(is_prime); k += i + i){
+			is_prime[k] = false;
+		}
+	}${2}
+#}
+snippet combination #{
+	${2:int} C[${1:N}][$1];
+	memset(C, 0, (sizeof C));
+	REP(i, $1){
+		C[i][0] = 1;
+	}
+	for(int i = 1; i < $1; ++i){
+		for(int j = 1; j <= i; ++j){
+			C[i][j] = C[i - 1][j - 1] + C[i - 1][j];
+		}
+	}${3}
+#}
+snippet subset #{
+	for(int ${1:subset} = ${2:msk}; ; --$1, $1 &= $2){
+		if(unlikely($1 == 0)){
+			break;
+		}
+		${3}
+	}
+#}
+snippet likely #{
+	if(likely(${1:a == b})){
+		${2}
+	}
+#}
+snippet unlikely #{
+	if(unlikely(${1:a == b})){
+		${2}
+	}
+#}
 snippet startsWith
 	bool startsWith(string text, string p){
 		if( text.size() < p.size() ) return false;
@@ -54,15 +230,6 @@ snippet inrange
 snippet XY
 	#define X real()
 	#define Y imag()
-snippet combination
-	${2:int} C[${1:N}][$1];
-	memset(C,0,(sizeof C));
-	Rep(i, $1) C[i][0] = 1;
-	for(int i = 1; i < $1; ++i){
-		for(int j = 1; j <= i; ++j){
-			C[i][j] = C[i-1][j-1] + C[i-1][j];
-		}
-	}${3}
 snippet dxdy
 	int dx[4] = {1, 0, -1, 0};
 	int dy[4] = {0, 1, 0, -1};
@@ -75,7 +242,7 @@ snippet BFS
 	int step = 0;
 	for(;;++step){
 		if( Q.empty() )break;
-		Rep(iq,Q.size()){
+		REP(iq,Q.size()){
 			$1 curr = Q[iq];
 			for(;xxx;){
 				nxt = ${5:transform}(curr);
@@ -87,14 +254,7 @@ snippet BFS
 		}
 		P.swap(Q); P.clear();
 	}
-snippet prime
-	bitset<${1:N}> isprime;
-	isprime.set();
-	isprime[0] = isprime[1] = false;
-	for(int i = 4; i < isprime.size(); i += 2 )isprime[i] = false;
-	for(int i = 3; i < isprime.size(); i += 2 )if( isprime[i] ){
-		for(int k = i * 3; k < isprime.size(); k += i + i) isprime[k] = false;
-	}${2}
+
 snippet ST
 	template<int M>
 	struct ST{
@@ -153,7 +313,7 @@ snippet Matrix
 		vector<vector<T> > val;
 		int n, m;
 		Matrix(int n = 1, int m = 1):n(n),m(m){
-			Rep(i, n){
+			REP(i, n){
 				val.push_back( vector<T>(m, T(0)) );
 			}
 		}
@@ -161,9 +321,9 @@ snippet Matrix
 		vector<T> const& operator[](const int x)const{return val[x];}
 		Matrix operator*(const Matrix& other)const{
 			Matrix ans(n, other.m);
-			Rep(i, n){
-				Rep(j, other.m){
-					Rep(k, m){
+			REP(i, n){
+				REP(j, other.m){
+					REP(k, m){
 						ans[i][j] += val[i][k] * other[k][j];
 					}
 				}
@@ -267,7 +427,7 @@ snippet pnt simple
 		return pnt[x] = getpnt( pnt[x] );
 	}
 	void make_set(int n){
-		Rep(i,n) pnt[i] = i;
+		REP(i,n) pnt[i] = i;
 	}
 	void union_set(int x, int y){
 		getpnt(x);
@@ -285,8 +445,8 @@ snippet pnt rank
 		return pnt[x] = p;
 	}
 	void make_set(int n){
-		Rep(i,n) pnt[i] = i;
-		Rep(i,n) rank[i] = 1;
+		REP(i,n) pnt[i] = i;
+		REP(i,n) rank[i] = 1;
 	}
 	void union_set(int x, int y){
 		getpnt(x);
@@ -318,12 +478,12 @@ snippet pair simple
 snippet tsp 0->(n-1)
 	// oo = 0x1f1f1f1f
 	memset(${3:dp},0x1f,(sizeof $3));
-	Rep(i,${1:n}-1){
+	REP(i,${1:n}-1){
 		$3[two(i)][i] = ${2:dist}[0][i+1];
 	}
 	for(int msk = 1; msk < two(n-2); msk++){
-		Rep(i,n-2)if( two(i) & msk ){
-			Rep(j,n-2) if(i != j && (two(j) & msk) ){
+		REP(i,n-2)if( two(i) & msk ){
+			REP(j,n-2) if(i != j && (two(j) & msk) ){
 				checkMin($3[msk][i], $3[msk ^ two(i)][j] + $2[i+1][j+1] );
 			}
 		}
@@ -355,8 +515,8 @@ snippet sg
 
 #建图
 snippet graph_read
-	Rep(i,n)nxt[i] = i;
-	Rep(i,m){
+	REP(i,n)nxt[i] = i;
+	REP(i,m){
 		scanf("%d%d%d", &a, &b, w+i);
 		name[i] = b;
 		nxt[i+n] = nxt[a];
@@ -428,19 +588,10 @@ snippet spfa
 		}
 		return from[dst] != -1;
 	}
-snippet powm
-	${1:ll} powm($1 x, $1 n){
-		$1 ans = 1;
-		for(; n; n/=2){
-			if(n&1) ans = ans * x % ${2:P};
-			x = x * x % $2;
-		}
-	        return ans;
-	}${3}
 snippet hash
 	Pn = powm(P,len);
 	hashes[len] = 0;
-	Rep(i,len) hashes[len] = hashes[len] * P + input[i];
+	REP(i,len) hashes[len] = hashes[len] * P + input[i];
 	for(int i = mid; i < n; ++i){
 		hashes[i+1] = hashes[i] * P - input[i-mid] * Pn + input[i];
 	}
@@ -463,7 +614,7 @@ snippet hull
 	    sort(pt,pt+n, cmp);
 	    n = unique(pt,pt+n)-pt;
 	    if( n <= 2 ){
-		    Rep(i,n)ans[i] = pt[i];
+		    REP(i,n)ans[i] = pt[i];
 		    m = n;
 		    return;
 	    }
@@ -483,7 +634,7 @@ snippet hull
 	    for(int i = 0; i < dp; ++i) hull[hp++] = D[i];
 	    for(int i = up - 2; i > 0; --i) hull[hp++] = U[i];
 	    m = hp;
-	    Rep(i,m)ans[i] = hull[i];
+	    REP(i,m)ans[i] = hull[i];
     }
 snippet EE 
 	struct EE{
@@ -510,4 +661,4 @@ snippet EE
 	void addedge(int a, int b){
 		ee[a].push_back( EE(b,ee[b].size() ) );
 		ee[b].push_back( EE(a,ee[a].size()-1 ) );
-	}
+

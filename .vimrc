@@ -1,23 +1,53 @@
+set nocompatible
+
+let mapleader=","
+
+"编辑vimrc
+nmap <silent> <leader>ev :e $MYVIMRC<CR>
+nmap <silent> <leader>sv :so $MYVIMRC<CR>
+nmap <silent> <leader>es :e $HOME/.vim/snippets/cpp-algorithm.snippets<CR>
+nmap <silent> <leader>ed :e $HOME/.vim/acm/scan-and-append.dat<CR>
+autocmd! bufwritepost *.vimrc source $MYVIMRC
+
+set nowrap
+
 set updatetime=4000
 set wildmenu
 set autoindent
+set copyindent
 set cindent
-set sm
-set lz
-set nu
+set smarttab
+set smartcase
+"set sm
+set lazyredraw
+set number
 set tags+=~/.vim/cpp_src/tags
 set fileencodings=utf-8,gb2312,gb18030,gbk,ucs-bom,cp936,latin1
 set termencoding=utf-8
 set noswapfile
+set nobackup
+set hlsearch
+set mouse=a
+cmap w!! w !sudo tee % > /dev/null
+
+nnoremap ; :
+nmap <silent> ,/ :nohlsearch<CR>
+
+set list
+set listchars=tab:\ \ ,trail:.,extends:#,nbsp:.
+
+set history=1000
+set undolevels=1000
+set wildignore=*.swp,*.bak,*.pyc,*class
+set title
 
 au BufNewFile,BufRead *.cpp,*.tex set makeprg=make\ %:t:r
-
-"set expandtab
+colo elflord
 
 set shiftwidth=4
 set tabstop=4
 set foldmethod=marker
-set bs=2
+set backspace=indent,eol,start
 syntax on
 map <Up> gk
 map <Down> gj
@@ -31,21 +61,12 @@ let g:vimwiki_list = [{'path': '~/Dropbox/vimwiki', 'path_html': '~/Dropbox/vimw
 "autorun
 let b:C_CmdLineArgs=' <in'
 map <F8> :NERDTree<CR>
-" shift tab pages
-map <S-Left> :tabp<CR>
-map <S-Right> :tabn<CR>
-map <C-Left> :bn<CR>
-map <C-Right> :bp<CR>
-map <C-Y> <Esc>bi<code><Esc>ea</code><Esc>
-map <C-tab> :sp
+nmap <F7> :TagbarToggle<CR>
 
-"编辑vimrc
-map <silent> <leader>ee :e $HOME/.vimrc<cr>
-autocmd! bufwritepost *.vimrc source $HOME/.vimrc
 
 map <F12> :!ctags -R --c++-kinds=+p --fields=+iaS --extra=+q %<CR>
 
-command! -range -nargs=* Google call eclim#web#SearchEngine('http://www.google.com/search?q=<query>', <q-args>, <line1>, <line2>)
+"command! -range -nargs=* Google call eclim#web#SearchEngine('http://www.google.com/search?q=<query>', <q-args>, <line1>, <line2>)
 
 "doxygen
 let g:DoxygenToolkit_authorName="chyx"
@@ -58,25 +79,25 @@ let g:rubycomplete_classes_in_global = 1
 
 "jflex
 augroup filetype
-  au BufRead,BufNewFile *.flex,*.jflex    set filetype=jflex
+  autocmd BufRead,BufNewFile *.flex,*.jflex    set filetype=jflex
 augroup END
-au Syntax jflex    so ~/.vim/syntax/jflex.vim
+autocmd Syntax jflex    source ~/.vim/syntax/jflex.vim
 
 "jQuery
-au BufRead,BufNewFile jquery.*.js set ft=javascript syntax=jquery
+autocmd BufRead,BufNewFile jquery.*.js set ft=javascript syntax=jquery
 
 filetype plugin indent on
 filetype plugin on
 
 "{{{ ACM FAST GENERATE
-map <F5> :call SetTitle()<CR>
+"map <F5> :call SetTitle()<CR>
 func! SetTitle()
 	let flags = "w"
 	if search("\t",flags) != 0 || search(" ", flags) != 0
 		call CR()
 		return
 	endif
-	let keystr = "//By chyx111"
+	let keystr = "//By =w="
 
 	let l = 0
 	"let l = l + 1 | call setline(l, "Created Time:  ".strftime("%c"))
@@ -95,13 +116,13 @@ endfunc
 func! CR()
 call AutoFill()
 exec "w"
-exec "!touch %:t:r.in"<CR>
-exec "!make %:t:r && ./%:t:r < %:t:r.in"
+execute "!touch %:t:r.in"<CR>
+execute "!make %:t:r && if [ -f %:t:r.in ] && [ -f %:r:r ]; then ./%:t:r < %:t:r.in; elif [ -f %:t:r ]; then ./%:t:r; elif [ -f %t:r.in ]; then ./a.out < %t%r.in; else ./a.out; fi"
 endfunc
 
 func! AutoFill()
 	let flags = "w"
-	let keystr = "//By chyx111"
+	let keystr = "//By =w="
 	if search(keystr,flags)== 0
 		return
 	endif
@@ -115,8 +136,8 @@ func! AutoFill()
 \		["checkMin(",	"template<class T> void inline checkMin(T& a, T b){if(a > b) a = b;};"], 
 \		["_ceil_div(",	"template<class A, class B> A _ceil_div(A a, B b){ return (a + b - 1 ) / b ;}"],
 \		["Rep(", 	"#define Rep(i,n) for(int n_ = (n), i = 0; i< n_; ++i)"],
-\		["forEach(", 	"#define forEach(it,v) for(__typeof__((v).begin()) it = (v).begin(); it != (v).end(); ++it)"],
-\		["forElem(", "#define forElem(elem,v) \\", 
+\		["forI(", 	"#define forI(it,v) for(__typeof__((v).begin()) it = (v).begin(); it != (v).end(); ++it)"],
+\		["forE(", "#define forE(elem,v) \\", 
 \			"for(__typeof__(v.begin()) _it = v.begin(); _it != v.end(); ++_it)\\",
 \			"for(int _once=1, _done=0; _once; (!_done) ? (_it=v.end(), --_it) : _it )\\",
 \			"for(__typeof__(*_it) & elem = * _it; _once && !(_once=0); _done=1) "],
@@ -156,6 +177,7 @@ func! AutoFill()
 \		["isdigit", "#include <cctype>"],
 \		["bitset", "#include <bitset>"],
 \		["string", "#include <string>"],
+\		["rand", "#include <cstdlib>"],
 \		["assert", "#include <cassert>"],
 \		["strlen", "memset", "memcpy", "#include <cstring>"],
 \		["scanf", "printf", "getchar", "puts", "gets", "#include <cstdio>"],
@@ -200,4 +222,3 @@ endfunction
 
 nmap ,rr :call ReloadSnippets(snippets_dir, &filetype)<CR>
 
-set mouse=a

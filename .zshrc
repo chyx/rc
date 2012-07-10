@@ -37,7 +37,8 @@ source $ZSH/oh-my-zsh.sh
 alias syn='synergyc -f 192.168.137.1'
 
 
-if [[ $TTY = /dev/vc/4 ]]; then
+if [[ $TTY = /dev/tty4 ]]; then
+	sleep 10
 	exec synergyc -f 192.168.137.1
 fi
 
