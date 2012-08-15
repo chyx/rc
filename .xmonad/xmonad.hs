@@ -8,6 +8,7 @@
 --
 
 import XMonad
+import XMonad.Hooks.DynamicLog
 import Data.Monoid
 import System.Exit
 
@@ -254,7 +255,7 @@ main = xmonad defaults
 defaults = defaultConfig {
       -- simple stuff
         terminal           = myTerminal,
-        focusFollowsMouse  = myFocusFollowsMouse,
+        --focusFollowsMouse  = myFocusFollowsMouse,
         borderWidth        = myBorderWidth,
         modMask            = myModMask,
         workspaces         = myWorkspaces,

@@ -38,9 +38,9 @@ for(__typeof__(_it->second) & b = _it->second; _once2 && !(_once2 = false); _don
 //TWOLL(
 #define TWOLL(x) (1LL << (x))
 //DBG(
-#define DBG(a) do{cerr << #a << ": " << (a) << endl;}while(0)
+#define DBG(a) do{std::cerr << #a << ": " << (a) << std::endl;}while(0)
 //DBG_(
-#define DBG_(a) do{cerr << #a << ": " << (a) << ' ';}while(0)
+#define DBG_(a) do{std::cerr << #a << ": " << (a) << ' ';}while(0)
 //ALL(
 #define ALL(a) (a).begin(), (a).end()
 //SZ(
@@ -59,7 +59,7 @@ inline int _getint(int n = 0)
 #include <iostream>
 //ofstream|fstream|ifstream
 #include <fstream>
-//sort|min|max|permutation|unique|__gcd|reverse|rotate|min_element|max_element|partial_sort|nth_element|pair
+//sort|min|max|permutation|unique|__gcd|reverse|rotate|min_element|max_element|partial_sort|nth_element|pair|labs
 #include <algorithm>
 //isdigit
 #include <cctype>

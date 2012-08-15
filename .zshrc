@@ -35,10 +35,13 @@ source $ZSH/oh-my-zsh.sh
 
 # Customize to your needs...
 alias syn='synergyc -f 192.168.137.1'
-
+alias mywpa='sudo ip link set eth0 down && sudo wpa_supplicant -i wlan0 -c wpa_supplicant.conf'
 
 if [[ $TTY = /dev/tty4 ]]; then
 	sleep 10
 	exec synergyc -f 192.168.137.1
 fi
 
+export XMODIFIERS="@im=ibus"
+export GTK_IM_MODULE=ibus
+export QT_IM_MODULE=ibus

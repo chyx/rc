@@ -12,7 +12,9 @@ abbreviate forI FORI
 abbreviate fori FORI
 abbreviate forPair FORPAIR
 abbreviate forpair FORPAIR
-
+abbreviate cout std::cout
+abbreviate cerr std::cerr
+abbreviate endl std::endl
 
 function! ScanAndAppend()
 	execute "w"
@@ -44,7 +46,8 @@ func! SetTitle()
 	let l = l + 1 | call setline(l, "")
 	let l = l + 1 | call setline(l, keystr)
 	let l = l + 1 | call setline(l, "")
-	let l = l + 1 | call setline(l, "int main() {")
+	let l = l + 1 | call setline(l, "int main()")
+	let l = l + 1 | call setline(l, "{")
 	let l = l + 1 | call setline(l, "\t")
 	let l = l + 1 | call setline(l, "\treturn 0;")
 	let l = l + 1 | call setline(l, "}")

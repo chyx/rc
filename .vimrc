@@ -222,3 +222,22 @@ endfunction
 
 nmap ,rr :call ReloadSnippets(snippets_dir, &filetype)<CR>
 
+functio! Put_problem_rst()
+	exe "normal i=============="
+	exe "normal o=============="
+	exe "normal o"
+	exe "normal oInput"
+	exe "normal o====="
+	exe "normal o"
+	exe "normal oOutput"
+	exe "normal o======"
+	exe "normal o"
+	exe "normal oSample Input"
+	exe "normal o============"
+	exe "normal o"
+	exe "normal oSample Output"
+	exe "normal o============="
+	exe "normal ggo"
+endfunction
+autocmd! BufNewFile *.rst call Put_problem_rst()
+

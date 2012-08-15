@@ -1,4 +1,7 @@
 # vim: filetype=cpp indentexpr& foldmarker=#{,#} foldmethod=marker
+snippet ve #{
+	std::vector<${1:int}> ${2}
+#}
 snippet R #{
 	REP (${1:_}, ${2:_})${3}{
 		${4}
@@ -41,19 +44,20 @@ snippet factor #{
 	}
 #}
 snippet pp #{
-	template<class S, class T> ostream& operator<<(ostream& os, pair<S, T> p)
+	template<class S, class T> std::ostream& operator<<(std::ostream& os, std::pair<S, T> p)
 	{
 		return os << "(" << p.first << ", " << p.second << ")";
 	};
 #}
 snippet os #{
-	ostream& operator<<(ostream& os, ${1:T} const& obj)
+	std::ostream& operator<<(std::ostream& os, ${1:T} const& obj)
 	{
 		return os << obj;
 	}
 #}
 snippet pv #{
-	template<class T> ostream& operator<<(ostream& os, vector<T> v){
+	template<class T> std::ostream& operator<<(std::ostream& os, std::vector<T> v)
+	{
 		REP (i, v.size()){
 			if(likely(i != 0)){
 				os << ' ';
@@ -64,7 +68,7 @@ snippet pv #{
 	};
 #}
 snippet pii #{
-	pair<int, int>${1}
+	std::pair<${1:int}, ${2:int}> ${3}
 #}
 snippet fin c#{
 	FILE *${1:fin} = fopen(${2:"input.txt"}, "r");${3}
@@ -143,7 +147,7 @@ snippet graph #{
 snippet union_set #{
 	struct UnionSet{ // {{{
 		int n;
-		valarray<int> pnt;
+		std::valarray<int> pnt;
 		UnionSet(int n)
 			:n(n), pnt(-1, n)
 		{
@@ -173,7 +177,7 @@ snippet union_set #{
 	// }}}
 #}
 snippet prime #{
-	bitset<${1:N}> is_prime;
+	std::bitset<${1:N}> is_prime;
 	is_prime.set();
 	is_prime[0] = is_prime[1] = false;
 	for(int i = 4; i < SZ(is_prime); i += 2){
@@ -210,10 +214,17 @@ snippet likely #{
 		${2}
 	}
 #}
+snippet fre #{
+	freopen("${1:xx}.in", "r", stdin);
+	freopen("$1.out", "w", stdout);
+#}
 snippet unlikely #{
 	if(unlikely(${1:a == b})){
 		${2}
 	}
+#}
+snippet usi #{
+	using namespace std;
 #}
 snippet startsWith
 	bool startsWith(string text, string p){
@@ -256,8 +267,7 @@ snippet BFS
 	}
 
 snippet ST
-	template<int M>
-	struct ST{
+	template<int M> struct ST{
 		int T[M+M];
 		ST(){ memset(T,0,(sizeof T)); }
 		int getsum(int s, int t){
