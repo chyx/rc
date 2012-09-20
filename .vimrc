@@ -1,3 +1,5 @@
+call pathogen#infect()
+
 set nocompatible
 
 let mapleader=","
@@ -6,7 +8,7 @@ let mapleader=","
 nmap <silent> <leader>ev :e $MYVIMRC<CR>
 nmap <silent> <leader>sv :so $MYVIMRC<CR>
 nmap <silent> <leader>es :e $HOME/.vim/snippets/cpp-algorithm.snippets<CR>
-nmap <silent> <leader>ed :e $HOME/.vim/acm/scan-and-append.dat<CR>
+nmap <silent> <leader>em :e $HOME/.vim/acm/scan-and-append.dat<CR>
 autocmd! bufwritepost *.vimrc source $MYVIMRC
 
 set nowrap
@@ -51,6 +53,7 @@ map <Up> gk
 map <Down> gj
 set list
 set listchars=tab:\ \ ,trail:.,extends:#,nbsp:.
+imap ,; std:
 
 colo elflord
 
@@ -100,6 +103,11 @@ function! ReloadSnippets( snippets_dir, ft )
 	call GetSnippets( a:snippets_dir, filetype )
 endfunction
 
+" If you prefer the Omni-Completion tip window to close when a selection is
+" made, these lines close it on movement in insert mode or when leaving
+" insert mode
+autocmd! CursorMovedI * if pumvisible() == 0|pclose|endif
+autocmd! InsertLeave * if pumvisible() == 0|pclose|endif
 
 function! Put_problem_rst()
 	execute "normal i=============="
@@ -119,4 +127,28 @@ function! Put_problem_rst()
 	execute "normal ggo"
 endfunction
 autocmd! BufNewFile *.rst call Put_problem_rst()
+
+"-------------------------------------------------------------------------------
+" comma always followed by a space
+"-------------------------------------------------------------------------------
+"inoremap  ,  ,<Space>
+"
+"-------------------------------------------------------------------------------
+" autocomplete parenthesis, brackets and braces
+"-------------------------------------------------------------------------------
+"inoremap ( ()<Left>
+"inoremap [ []<Left>
+"inoremap { {}<Left>
+""
+"vnoremap ( s()<Esc>P<Right>%
+"vnoremap [ s[]<Esc>P<Right>%
+"vnoremap { s{}<Esc>P<Right>%
+"
+"-------------------------------------------------------------------------------
+" autocomplete quotes (visual and select mode)
+"-------------------------------------------------------------------------------
+"xnoremap  '  s''<Esc>P<Right>
+"xnoremap  "  s""<Esc>P<Right>
+"xnoremap  `  s``<Esc>P<Right>
+"
 

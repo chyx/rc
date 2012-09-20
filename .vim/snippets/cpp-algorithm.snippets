@@ -2,6 +2,9 @@
 snippet ve #{
 	std::vector<${1:int}> ${2}
 #}
+snippet all #{
+	${1:v}.begin(), $1.end()${2}
+#}
 snippet R #{
 	REP (${1:_}, ${2:_})${3}{
 		${4}
@@ -226,6 +229,59 @@ snippet unlikely #{
 snippet usi #{
 	using namespace std;
 #}
+snippet lt #{
+	bool operator<({$1:T} const& other) const
+	{
+		${2}
+		return false;
+	}
+#}
+snippet integer_digits #{
+	template<class T> std::vector<int> integer_digits(T x)
+	{
+		std::vector<int> ret;
+		for(; x != 0; x /= 10){
+			ret.push_back(x % 10);
+		}
+		reverse(ALL(ret));
+		return ret;
+	};
+#}
+snippet phi_table #{
+	int const ${1:MAXN} = 1000010;
+	int eulerphi[$1];
+	REP (i, $1){
+		eulerphi[i] = 1;
+	}
+	for(int i = 2; i < $1; ++i) if(eulerphi[i] == 1){
+		for(int k = i; k < $1; k += i){
+			eulerphi[k] *= i - 1;
+		}
+		for(long long gap = i * (long long)i; gap < $1; gap *= i){
+			for(int k = gap; k < $1; k += gap){
+				eulerphi[k] *= i;
+			}
+		}
+	}
+#}
+snippet euler_phi #{
+int euler_phi(int n)
+{
+	int ans = 1;
+	for(int d = 2; d * d <= n; ++d)if(n % d == 0){
+		n /= d;
+		ans *= d - 1;
+		while(n % d == 0){
+			n /= d;
+			ans *= d;
+		}
+	}
+	if(n != 1){
+		ans *= n - 1;
+	}
+	return ans;
+}
+#}
 snippet startsWith
 	bool startsWith(string text, string p){
 		if( text.size() < p.size() ) return false;
@@ -233,7 +289,9 @@ snippet startsWith
 	}
 snippet endsWith
 	bool endsWith(string text, string p){
-		if( text.size() < p.size() ) return false;
+		if(text.size() < p.size()){
+			return false;
+		}
 		return text.substr(text.size() - p.size()) == p;
 	}
 snippet inrange

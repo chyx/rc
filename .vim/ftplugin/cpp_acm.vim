@@ -15,6 +15,7 @@ abbreviate forpair FORPAIR
 abbreviate cout std::cout
 abbreviate cerr std::cerr
 abbreviate endl std::endl
+abbreviate maxn MAXN
 
 function! ScanAndAppend()
 	execute "w"

@@ -83,7 +83,7 @@ inline int _getint(int n = 0)
 #include <set>
 //map
 #include <map>
-//sin\(|cos|tan|pow|sqrt|exp|log|fabs
+//sin\(|cos|tan|pow|sqrt|exp|log|fabs|hypot
 #include <cmath>
 //complex
 #include <complex>
